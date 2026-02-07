@@ -1,14 +1,42 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
+}
+
+// enum Role criado após a criação do model Post.
+enum Role {
+  USER
+  ADMIN
+}
+
+// Comando prisma db push - para criar as tabelas no banco de dados com base no modelo definido abaixo
+// Comando prisma db pull - para atualizar o modelo com base nas tabelas existentes no banco de dados
+// campo status acrescentado depois de rodar o primeiro migrate.
+// Os campos createdAt, updatedAt e role foram acrescentados depois da criação do model Post.
+model User {
+  id        Int      @id @default(autoincrement())
+  status    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @default(USER)
+  name      String
+  email     String   @unique
+  posts     Post[]
+}
+
+// Depois vamos criar a tabela Post, que tem um relacionamento com a tabela User.
+// Cada post pertence a um usuário, e um usuário pode ter vários posts.
+// depois de rodar o migrate da criação do model Post, incluimos o campo sbtitle, que é opcional.
+// ATENÇÂO: repteir o erro para mostrar aos alunos o processo de correção do erro.
+// criei o nome do campo, sbtitle, errado, deveria ser subtitle,
+// vou ajustar e rodar o migrate novamente para corrigir o nome do campo.
+model Post {
+  id       Int     @id @default(autoincrement())
+  title    String
+  subtitle String?
+  userId   Int
+  author   User    @relation(fields: [userId], references: [id])
 }
