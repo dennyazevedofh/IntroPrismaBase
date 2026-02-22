@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -25,18 +25,22 @@ model User {
   name      String
   email     String   @unique
   posts     Post[]
+
+  @@map("users")
 }
 
 // Depois vamos criar a tabela Post, que tem um relacionamento com a tabela User.
 // Cada post pertence a um usuário, e um usuário pode ter vários posts.
 // depois de rodar o migrate da criação do model Post, incluimos o campo sbtitle, que é opcional.
-// ATENÇÂO: repteir o erro para mostrar aos alunos o processo de correção do erro.
+// ATENÇÂO: repeter o erro para mostrar aos alunos o processo de correção do erro.
 // criei o nome do campo, sbtitle, errado, deveria ser subtitle,
 // vou ajustar e rodar o migrate novamente para corrigir o nome do campo.
 model Post {
   id       Int     @id @default(autoincrement())
   title    String
   subtitle String?
-  userId   Int
+  userId   Int     @map("user_id") // colocar depois do migrate do nome das tabelas
   author   User    @relation(fields: [userId], references: [id])
+
+  @@map("posts")
 }
