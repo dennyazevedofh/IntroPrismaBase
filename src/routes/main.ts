@@ -13,3 +13,8 @@ mainRouter.get('/test', (req, res) => {
     prisma.user.findFirst
 });
 */
+
+// depois de ajustar o watch do tsx, usar o código abaixo para mostrar funcionando
+mainRouter.get('/test', (req, res) => {
+    res.json({ testando: true });
+});
