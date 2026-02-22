@@ -15,6 +15,19 @@ mainRouter.get('/test', (req, res) => {
 */
 
 // depois de ajustar o watch do tsx, usar o código abaixo para mostrar funcionando
+/*
 mainRouter.get('/test', (req, res) => {
     res.json({ testando: true });
+});
+*/
+
+mainRouter.post('/user', async (req, res) => {
+    const user = await prisma.user.create({
+        data: {
+            name: 'John Doe',
+            email: 'john.doe@example.com'
+        }
+    });
+
+    res.json(user);
 });
